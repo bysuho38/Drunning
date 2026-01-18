@@ -780,7 +780,7 @@ header p {
    - 클릭 시 메인 화면으로 전환 */
 .start-button {
     position: absolute;
-    bottom: 400px; /* 화면 하단에서 200px 위 */
+    bottom: 250px; /* 화면 하단에서 250px 위로 조정 (드러닝 글씨와 겹치지 않도록) */
     left: 50%;
     transform: translateX(-50%); /* 수평 중앙 정렬 */
     background: #4A90E2; /* 파란색 배경 */
@@ -2541,6 +2541,7 @@ header p {
 }
 
 .start-running-btn,
+.start-animation-btn,
 .stop-running-btn {
     flex: 1;
     padding: 16px 24px;
@@ -2563,6 +2564,17 @@ header p {
     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 
+.start-animation-btn {
+    background: #17a2b8;
+    color: white;
+}
+
+.start-animation-btn:hover {
+    background: #138496;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+}
+
 .stop-running-btn {
     background: #dc3545;
     color: white;
@@ -2575,6 +2587,7 @@ header p {
 }
 
 .start-running-btn.hidden,
+.start-animation-btn.hidden,
 .stop-running-btn.hidden {
     display: none;
 }
@@ -2590,6 +2603,7 @@ header p {
     }
     
     .start-running-btn,
+    .start-animation-btn,
     .stop-running-btn {
         padding: 14px 20px;
         font-size: 1em;

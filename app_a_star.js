@@ -2275,8 +2275,10 @@ function showRunningScreen(route, startPoint, shapeName, selectedShape) {
     
     // 버튼 상태 업데이트
     const startBtn = document.getElementById('start-running-btn');
+    const animationBtn = document.getElementById('start-animation-btn');
     const stopBtn = document.getElementById('stop-running-btn');
     if (startBtn) startBtn.classList.remove('hidden');
+    if (animationBtn) animationBtn.classList.remove('hidden');
     if (stopBtn) stopBtn.classList.add('hidden');
     
     // 지도 초기화
@@ -2473,6 +2475,45 @@ function animateRouteFollowing() {
     }
 }
 
+// 애니메이션 모드 시작 (HTTPS 환경에서도 사용 가능)
+function startAnimationMode() {
+    if (isRunning || isAnimating) return;
+    
+    if (!currentRunningRoute || !currentRunningRoute.coordinates || currentRunningRoute.coordinates.length === 0) {
+        alert('경로가 선택되지 않았습니다. 먼저 경로를 선택해주세요.');
+        return;
+    }
+    
+    isRunning = false; // GPS 추적은 하지 않음
+    isAnimating = true; // 애니메이션만 실행
+    runningTrackCoordinates = [];
+    routeAnimationIndex = 0;
+    
+    // 상태 업데이트
+    const statusText = document.getElementById('running-status-text');
+    if (statusText) {
+        statusText.textContent = '애니메이션 진행 중...';
+    }
+    
+    // 버튼 상태 업데이트
+    const startBtn = document.getElementById('start-running-btn');
+    const animationBtn = document.getElementById('start-animation-btn');
+    const stopBtn = document.getElementById('stop-running-btn');
+    if (startBtn) startBtn.classList.add('hidden');
+    if (animationBtn) animationBtn.classList.add('hidden');
+    if (stopBtn) stopBtn.classList.remove('hidden');
+    
+    // 첫 번째 좌표에 Runner 마커 배치
+    if (currentRunningRoute && currentRunningRoute.coordinates.length > 0) {
+        const firstCoord = currentRunningRoute.coordinates[0];
+        const [firstLat, firstLon] = firstCoord;
+        displayRunnerMarker(firstLat, firstLon);
+    }
+    
+    // 애니메이션 시작
+    animateRouteFollowing();
+}
+
 // 드로잉런 시작
 function startRunning() {
     if (isRunning || isAnimating) return;
@@ -2494,8 +2535,10 @@ function startRunning() {
     
     // 버튼 상태 업데이트
     const startBtn = document.getElementById('start-running-btn');
+    const animationBtn = document.getElementById('start-animation-btn');
     const stopBtn = document.getElementById('stop-running-btn');
     if (startBtn) startBtn.classList.add('hidden');
+    if (animationBtn) animationBtn.classList.add('hidden');
     if (stopBtn) stopBtn.classList.remove('hidden');
     
     // HTTPS 환경: GPS 추적 시작
@@ -2575,8 +2618,10 @@ function stopRunning() {
     
     // 버튼 상태 업데이트
     const startBtn = document.getElementById('start-running-btn');
+    const animationBtn = document.getElementById('start-animation-btn');
     const stopBtn = document.getElementById('stop-running-btn');
     if (startBtn) startBtn.classList.remove('hidden');
+    if (animationBtn) animationBtn.classList.remove('hidden');
     if (stopBtn) stopBtn.classList.add('hidden');
     
     // 기존 경로 레이어 제거 (붉은 선만 남기기)
@@ -4638,6 +4683,13 @@ window.addEventListener('load', async () => {
     if (startRunningBtn) {
         startRunningBtn.addEventListener('click', () => {
             startRunning();
+        });
+    }
+    
+    const startAnimationBtn = document.getElementById('start-animation-btn');
+    if (startAnimationBtn) {
+        startAnimationBtn.addEventListener('click', () => {
+            startAnimationMode();
         });
     }
     
