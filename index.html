@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드러닝 - Drawing Run</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 시작 화면 -->
+    <div id="start-screen" class="start-screen">
+        <div class="start-content">
+            <div class="start-text-top">
+                <p>지도 위에</p>
+                <p>그리는 그림</p>
+            </div>
+            
+            <!-- 마스코트 이미지 영역 (나중에 이미지로 교체 가능) -->
+            <div class="start-mascot">
+            <img src="images/DrunningIcon.png" alt="드러닝 마스코트" class="mascot-image">
+            </div>
+            
+            <h1 class="start-title">드러닝</h1>
+            
+            <div class="start-copyright">
+                <p>© 런디터</p>
+            </div>
+            
+            <!-- 시작하기 버튼 -->
+            <button id="start-btn" class="start-button">드러닝 시작하기</button>
+        </div>
+    </div>
+    
+    <!-- 지역 선택 화면 (초기에는 숨김) -->
+    <div id="region-select-screen" class="region-select-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="region-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">지역 선택</h2>
+            <button id="region-next-nav-btn" class="nav-next-btn">→</button>
+        </div>
+        
+        <!-- 마스코트 및 말풍선 -->
+        <div class="region-mascot-section">
+            <div class="region-mascot">
+                <img src="images/Drunning_Mascot.png" alt="드러닝 마스코트" class="mascot-image-small">
+            </div>
+            <div class="region-speech-bubble">
+                <p>그림 그릴 지역을 선택해주세요</p>
+            </div>
+        </div>
+        
+        <!-- 지역 선택 영역 -->
+        <div class="region-select-container">
+            <div class="region-select-item selected" data-region="전북특별자치도 전주시">
+                <div class="region-item-content">
+                    <span class="region-name">전북특별자치도</span>
+                    <span class="region-city">전주시</span>
+                </div>
+                <div class="region-check">✓</div>
+            </div>
+        </div>
+        
+        <!-- 다음 단계 버튼 -->
+        <button id="region-next-btn" class="region-next-btn">다음 단계로</button>
+    </div>
+    
+    <!-- 테마 선택 화면 (초기에는 숨김) -->
+    <div id="theme-select-screen" class="theme-select-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="theme-nav-bar">
+            <button id="theme-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">테마 선택</h2>
+            <button id="theme-next-nav-btn" class="nav-next-btn">→</button>
+        </div>
+        
+        <!-- 마스코트 및 말풍선 -->
+        <div class="theme-mascot-section">
+            <div class="theme-mascot">
+                <img src="images/Drunning_Mascot.png" alt="드러닝 마스코트" class="mascot-image-small">
+            </div>
+            <div class="theme-speech-bubble">
+                <p>어떤 장소를 지나가고 싶나요?</p>
+            </div>
+        </div>
+        
+        <!-- 테마 선택 영역 -->
+        <div class="theme-select-container">
+            <div class="theme-select-item" data-theme="historical">
+                <div class="theme-radio"></div>
+                <span class="theme-label">역사적 의미가 있는 장소</span>
+            </div>
+            <div class="theme-select-item selected" data-theme="cultural">
+                <div class="theme-radio"></div>
+                <span class="theme-label">즐길 수 있는 문화공간</span>
+            </div>
+            <div class="theme-select-item" data-theme="food">
+                <div class="theme-radio"></div>
+                <span class="theme-label">맛있는 음식점</span>
+            </div>
+            <div class="theme-select-item" data-theme="all">
+                <div class="theme-radio"></div>
+                <span class="theme-label">어디든 좋아!</span>
+            </div>
+        </div>
+        
+        <!-- 다음 단계 버튼 -->
+        <button id="theme-next-btn" class="theme-next-btn">다음 단계로</button>
+    </div>
+    
+    <!-- POI 선택 화면 (초기에는 숨김) -->
+    <div id="poi-select-screen" class="poi-select-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="poi-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">장소 선택</h2>
+            <button id="poi-next-nav-btn" class="nav-next-btn">→</button>
+        </div>
+        
+        <!-- 화면 분할 컨테이너 -->
+        <div class="poi-select-split-container">
+            <!-- 위쪽: 지도 영역 -->
+            <div class="poi-map-section">
+                <div id="poi-select-map" class="poi-select-map"></div>
+            </div>
+            
+            <!-- 아래쪽: POI 목록 영역 -->
+            <div class="poi-list-section">
+                <!-- 거리 정보 및 경고 메시지 영역 -->
+                <div id="poi-distance-info-section" class="poi-distance-info-section hidden">
+                    <div class="distance-info-content">
+                        <div class="distance-text">
+                            최소 직선거리: <span id="poi-distance-value">0</span> km
+                        </div>
+                    </div>
+                </div>
+                <div id="poi-distance-warning-section" class="poi-distance-warning-section hidden">
+                    <div class="warning-content">
+                        <p>⚠️ 너무 긴 동선을 계획하고 있습니다!</p>
+                        <p>선택한 POI의 양을 줄이거나 동선이 짧아지도록 계획하십시오!</p>
+                    </div>
+                </div>
+                
+                <!-- 카테고리 선택 버튼 -->
+                <div class="poi-category-buttons">
+                    <button class="poi-category-btn active" data-category="all">
+                        모든 장소보기
+                    </button>
+                    <button class="poi-category-btn" data-category="historical">
+                        역사적 장소
+                    </button>
+                    <button class="poi-category-btn" data-category="cultural">
+                        문화공간
+                    </button>
+                    <button class="poi-category-btn" data-category="food">
+                        맛집/카페
+                    </button>
+                </div>
+                
+                <!-- POI 목록 영역 -->
+                <div class="poi-list-container">
+                    <div id="poi-select-list" class="poi-select-list">
+                        <!-- POI 목록이 여기에 동적으로 추가됨 -->
+                    </div>
+                </div>
+                
+                <!-- 선택된 POI 표시 영역 -->
+                <div class="poi-selected-summary">
+                    <div class="poi-selected-count">
+                        <span id="poi-selected-count-text">0개 선택됨</span>
+                    </div>
+                </div>
+                
+                <!-- 다음 단계 버튼 -->
+                <button id="poi-next-btn" class="poi-next-btn">다음 단계로</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 시작 위치 선택 화면 (초기에는 숨김) -->
+    <div id="start-location-screen" class="start-location-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="start-location-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">시작 위치 선택</h2>
+            <button id="start-location-next-nav-btn" class="nav-next-btn">→</button>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div class="start-location-map-container">
+            <div id="start-location-map" class="start-location-map"></div>
+            <!-- 시작 위치 마커 안내 -->
+            <div class="start-location-hint">
+                <p>지도를 클릭하여 시작 위치를 선택하세요</p>
+            </div>
+        </div>
+        
+        <!-- 선택된 위치 정보 -->
+        <div class="start-location-info">
+            <div class="location-info-content">
+                <div class="location-info-item">
+                    <span class="location-label">선택된 위치:</span>
+                    <span id="selected-location-text" class="location-value">지도를 드래그하여 선택하세요</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 다음 단계 버튼 -->
+        <button id="start-location-next-btn" class="start-location-next-btn">다음 단계로</button>
+    </div>
+    
+    <!-- 메인 컨텐츠 (초기에는 숨김) -->
+    <div id="main-content" class="main-content hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="main-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">경로 생성</h2>
+            <button class="nav-next-btn" style="opacity: 0; pointer-events: none;">→</button>
+        </div>
+        
+        <!-- 메인 컨텐츠 컨테이너 -->
+        <div class="main-content-container">
+            <!-- 위쪽: 모양 선택 및 경로 생성 영역 -->
+            <div class="main-shape-section">
+                <!-- 모양 선택 그리드 (3열 2행) -->
+                <div class="shape-selector-grid">
+                    <h2 class="shape-selector-title">원하는 모양을 선택하세요</h2>
+                    <div class="shape-grid">
+                        <button id="shape-square" class="shape-btn-grid active">
+                            <div class="shape-icon"><img src="images/square.png" alt="사각형"></div>
+                            <span>사각형</span>
+                        </button>
+                        <button id="shape-triangle" class="shape-btn-grid">
+                            <div class="shape-icon"><img src="images/triangle.png" alt="삼각형"></div>
+                            <span>삼각형</span>
+                        </button>
+                        <button id="shape-heart" class="shape-btn-grid">
+                            <div class="shape-icon"><img src="images/heart.png" alt="하트"></div>
+                            <span>하트</span>
+                        </button>
+                        <button id="shape-slate" class="shape-btn-grid">
+                            <div class="shape-icon"><img src="images/slate.png" alt="슬레이트런"></div>
+                            <span>슬레이트런</span>
+                        </button>
+                        <button id="shape-hanok" class="shape-btn-grid">
+                            <div class="shape-icon"><img src="images/hanok.png" alt="한옥런"></div>
+                            <span>한옥런</span>
+                        </button>
+                        <button id="shape-book" class="shape-btn-grid">
+                            <div class="shape-icon"><img src="images/book.png" alt="북런"></div>
+                            <span>북런</span>
+                        </button>
+                    </div>
+                    
+                    <!-- 경로 생성 버튼 -->
+                    <button id="search-btn" class="main-search-btn">경로 생성</button>
+                </div>
+            </div>
+            
+            <!-- 아래쪽: 지도 영역 -->
+            <div class="main-map-section">
+                <div id="map" class="map-container"></div>
+                
+                <!-- 로딩 오버레이 -->
+                <div id="loading-overlay" class="loading-overlay hidden">
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <p id="loading-message">경로를 생성하는 중...</p>
+                    </div>
+                </div>
+                
+                <!-- 경로 정보 패널 -->
+                <div class="info-panel">
+                    <h3>생성된 경로</h3>
+                    <div id="route-info">
+                        <p class="info-text">모양을 선택하고 "경로 생성" 버튼을 클릭하세요</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 로딩 화면 (초기에는 숨김) -->
+    <div id="loading-screen" class="loading-screen hidden">
+        <div class="loading-screen-content">
+            <div class="loading-shape-container">
+                <img id="loading-shape-image" src="images/square.png" alt="로딩 중" class="loading-shape-image">
+            </div>
+            <div class="loading-progress">
+                <p class="loading-progress-text" id="loading-progress-text">경로 생성 중...</p>
+                <p class="loading-progress-count" id="loading-progress-count">0/0</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 결과 화면 (초기에는 숨김) -->
+    <div id="result-screen" class="result-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="result-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">경로 결과</h2>
+            <button class="nav-next-btn" style="opacity: 0; pointer-events: none;">→</button>
+        </div>
+        
+        <!-- 결과 컨텐츠 -->
+        <div class="result-content">
+            <div class="result-map-container">
+                <div id="result-map" class="result-map"></div>
+            </div>
+            
+            <div class="result-list-container">
+                <div class="result-list-header">
+                    <h3 class="result-list-title">상위 10개 경로 후보</h3>
+                    <button id="retry-longer-range-btn" class="retry-longer-range-btn">더 긴 거리에서 탐색하기</button>
+                </div>
+                <div id="result-candidate-list" class="result-candidate-list">
+                    <!-- 후보 목록이 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 드로잉런 실행 화면 (초기에는 숨김) -->
+    <div id="running-screen" class="running-screen hidden">
+        <!-- 상단 네비게이션 바 -->
+        <div class="region-nav-bar">
+            <button id="running-back-btn" class="nav-back-btn">←</button>
+            <h2 class="nav-title">드로잉런 실행</h2>
+            <button class="nav-next-btn" style="opacity: 0; pointer-events: none;">→</button>
+        </div>
+        
+        <!-- 드로잉런 컨텐츠 -->
+        <div class="running-content">
+            <div class="running-map-container">
+                <div id="running-map" class="running-map"></div>
+            </div>
+            
+            <!-- 드로잉런 컨트롤 패널 -->
+            <div class="running-control-panel">
+                <div class="running-status">
+                    <p id="running-status-text">경로를 확인하고 시작 버튼을 눌러주세요</p>
+                </div>
+                <div class="running-buttons">
+                    <button id="start-running-btn" class="start-running-btn">드로잉런 시작</button>
+                    <button id="stop-running-btn" class="stop-running-btn hidden">드로잉런 중지</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="templates.js?v=33"></script>
+    <!-- 원본 -->
+    <!-- <script src="app_original.js?v=4"></script> -->
+
+    <!-- 힙 기반 다익스트라 -->
+    <!-- <script src="app_min_heap.js?v=8"></script> -->
+
+    <!-- 또는 A* 알고리즘 -->
+    <script src="app_a_star.js?v=70"></script>
+</body>
+</html>

@@ -1,0 +1,2597 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+header p {
+    font-size: 1.1em;
+    opacity: 0.95;
+}
+
+.shape-selector {
+    padding: 30px;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
+}
+
+.shape-selector h2 {
+    margin-bottom: 25px;
+    color: #495057;
+    font-size: 1.5em;
+}
+
+.shape-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.shape-btn {
+    background: white;
+    border: 3px solid #dee2e6;
+    border-radius: 15px;
+    padding: 25px 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    min-width: 150px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shape-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #667eea;
+}
+
+.shape-btn.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.shape-btn span {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #495057;
+}
+
+.shape-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.shape-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* 사각형과 하트 이미지 크기 조정 */
+#shape-square .shape-icon img {
+    width: 140%;
+    height: 140%;
+    object-fit: contain;
+}
+
+#shape-heart .shape-icon img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.length-selector {
+    margin: 25px 0;
+}
+
+.length-selector h3 {
+    margin-bottom: 15px;
+    color: #495057;
+    font-size: 1.2em;
+}
+
+.length-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.length-btn {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.length-btn:hover {
+    border-color: #667eea;
+    background: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.length-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 50px;
+    font-size: 1.3em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-search:active {
+    transform: translateY(0);
+}
+
+.map-container {
+    width: 100%;
+    height: 600px;
+    position: relative;
+}
+
+.info-panel {
+    padding: 25px;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+}
+
+.info-panel h3 {
+    margin-bottom: 20px;
+    color: #495057;
+    font-size: 1.5em;
+}
+
+#route-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    min-height: 150px;
+}
+
+.info-text {
+    color: #6c757d;
+    font-style: italic;
+    text-align: center;
+    padding: 40px 0;
+    font-size: 1.1em;
+}
+
+.route-item {
+    padding: 20px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.route-item:hover {
+    background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+    transform: translateX(5px);
+}
+
+.route-item h4 {
+    color: #495057;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.route-item p {
+    color: #6c757d;
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+
+.route-item .score {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* 로딩 오버레이 (화면 중앙) */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+.loading-content {
+    background: white;
+    padding: 40px 60px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    min-width: 300px;
+}
+
+.loading-content p {
+    color: #495057;
+    font-size: 1.2em;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn-refresh {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.btn-refresh:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* 상위 후보 경로 리스트 */
+.candidate-list-container {
+    margin-top: 16px;
+}
+
+.candidate-list-container h4 {
+    margin-bottom: 8px;
+}
+
+.candidate-list {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.candidate-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.candidate-item:last-child {
+    border-bottom: none;
+}
+
+.candidate-item:hover {
+    background: #f8f9fa;
+}
+
+.candidate-item.active {
+    background: #e7f1ff;
+}
+
+.candidate-rank {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #495057;
+    width: 32px;
+}
+
+.candidate-info p {
+    margin: 0;
+    font-size: 0.85em;
+}
+
+/* 시작점 선택 */
+.start-point-selector {
+    margin: 20px 0;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.start-point-selector h3 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 1.1em;
+}
+
+.btn-select-start {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.btn-select-start:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-select-start.active {
+    background: #dc3545;
+}
+
+.btn-select-start.active:hover {
+    background: #c82333;
+}
+
+.info-text-small {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* POI 선택 패널 */
+.poi-selector {
+    padding: 30px;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none; /* 초기에는 숨김 */
+}
+
+.poi-selector h2 {
+    margin-bottom: 20px;
+    color: #495057;
+    font-size: 1.3em;
+}
+
+.poi-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.poi-search-input,
+.poi-category-filter {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9em;
+    flex: 1;
+}
+
+.poi-category-filter {
+    flex: 0 0 200px;
+}
+
+.poi-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+.poi-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.poi-item:last-child {
+    border-bottom: none;
+}
+
+.poi-item:hover {
+    background: #f8f9fa;
+}
+
+.poi-item.selected {
+    background: #e7f1ff;
+    border-left: 3px solid #667eea;
+}
+
+.poi-item-info {
+    flex: 1;
+}
+
+.poi-item-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 3px;
+}
+
+.poi-item-category {
+    font-size: 0.85em;
+    color: #6c757d;
+}
+
+.poi-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.selected-pois {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.selected-pois h3 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 1.1em;
+}
+
+.selected-poi-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.selected-poi-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #667eea;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.85em;
+}
+
+.selected-poi-tag .remove-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8em;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected-poi-tag .remove-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* POI 검증 메시지 */
+.poi-validation {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
+
+.poi-validation p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* POI 범례 */
+.poi-legend {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-width: 250px;
+}
+
+.poi-legend h4 {
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+    color: #495057;
+    font-weight: 600;
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85em;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 시작점 선택 확인 애니메이션 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* POI 마커 클릭 범위 확대 */
+.leaflet-interactive {
+    cursor: pointer;
+}
+
+/* 모바일 반응형 - 메인 컨텐츠 (기존 스타일 유지) */
+@media (max-width: 768px) {
+    .main-shape-section {
+        padding: 15px;
+    }
+    
+    .shape-selector-title {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+    
+    /* 모바일: 모양 그리드 2열로 변경 */
+    .shape-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .shape-btn-grid {
+        padding: 15px;
+    }
+    
+    .shape-btn-grid span {
+        font-size: 0.9em;
+    }
+    
+    .main-search-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+}
+
+/* ============================================
+   시작 화면 (Splash Screen)
+   ============================================ */
+
+/* 시작 화면 전체 컨테이너
+   - 전체 화면을 덮는 고정 위치 레이어
+   - 페이지 로드 시 처음 보이는 화면
+   - "드러닝 시작하기" 버튼 클릭 시 숨김 처리됨 */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 라임 배경색 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* 다른 모든 요소 위에 표시 */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* 페이드아웃 애니메이션 */
+}
+
+/* 시작 화면 숨김 상태
+   - 버튼 클릭 시 이 클래스가 추가되어 화면이 사라짐 */
+.start-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* 클릭 이벤트 차단 */
+}
+
+/* 시작 화면 내부 컨텐츠 컨테이너
+   - 텍스트, 마스코트, 타이틀, 버튼을 세로로 배치하는 컨테이너 */
+   .start-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* center에서 flex-start로 변경 */
+    gap: 30px; /* 요소 간 간격 */
+    padding: 60px 20px 40px 20px; /* 상단 패딩 증가: 40px → 60px */
+    max-width: 400px;
+    width: 100%;
+    height: 100%;
+    position: relative; /* 버튼 절대 위치 기준점 */
+}
+
+/* 상단 텍스트 컨테이너
+   - "지도 위에 그리는 그림" 텍스트를 감싸는 영역 */
+   .start-text-top {
+    margin-bottom: 20px;
+    margin-top: 40px; /* 상단 여백 추가 */
+}
+
+/* 상단 텍스트 스타일
+   - "지도 위에", "그리는 그림" 각 줄의 스타일 */
+.start-text-top p {
+    font-size: 1.6em; 
+    color: #000;
+    font-weight: 500;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+/* 마스코트 이미지 스타일
+   - 시작 화면에 표시되는 드러닝 마스코트 아이콘
+   - images/DrunningIcon.png 파일 사용 */
+.mascot-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 비율 유지하며 크기 조정 */
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/* 마스코트 영역 컨테이너 */
+.start-mascot {
+    margin-top: 40px; /* 상단 여백 추가로 마스코트를 아래로 내림 */
+}
+
+/* 메인 타이틀 스타일
+   - "드러닝" 텍스트 스타일 */
+.start-title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+    margin-top: 20px; /* 상단 여백 추가로 타이틀을 아래로 내림 */
+    letter-spacing: 2px; /* 글자 간격 */
+    flex-shrink: 0; /* 축소 방지 */
+}
+
+/* 저작권 정보 컨테이너
+   - "© 런디터" 텍스트를 화면 하단에 고정 */
+.start-copyright {
+    margin-top: auto; /* flexbox에서 아래로 밀어내기 */
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+/* 저작권 텍스트 스타일
+   - "© 런디터" 텍스트 */
+.start-copyright p {
+    font-size: 0.9em;
+    color: #000;
+    opacity: 0.7; /* 약간 투명하게 */
+}
+
+/* 시작하기 버튼
+   - 화면 중앙에서 살짝 아래쪽에 위치
+   - 클릭 시 메인 화면으로 전환 */
+.start-button {
+    position: absolute;
+    bottom: 400px; /* 화면 하단에서 200px 위 */
+    left: 50%;
+    transform: translateX(-50%); /* 수평 중앙 정렬 */
+    background: #4A90E2; /* 파란색 배경 */
+    color: white;
+    border: none;
+    border-radius: 50px; /* 둥근 모서리 */
+    padding: 18px 50px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4); /* 그림자 효과 */
+    min-width: 200px;
+    min-height: 50px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+/* 시작하기 버튼 호버 상태
+   - 마우스를 올렸을 때의 스타일 */
+.start-button:hover {
+    background: #357ABD; /* 더 진한 파란색 */
+    transform: translateX(-50%) translateY(-2px); /* 살짝 위로 이동 */
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5); /* 더 큰 그림자 */
+}
+
+/* 시작하기 버튼 클릭 상태
+   - 버튼을 눌렀을 때의 스타일 */
+.start-button:active {
+    transform: translateX(-50%) translateY(0); /* 원래 위치로 */
+    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3); /* 작은 그림자 */
+}
+
+/* 메인 컨텐츠 숨김 상태
+   - 시작 화면이 표시되는 동안 메인 화면을 숨김 */
+.main-content.hidden {
+    display: none;
+}
+
+/* 메인 컨텐츠 표시 상태
+   - 시작 화면이 사라진 후 메인 화면을 표시 */
+.main-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 시작 화면과 동일한 라임 배경 */
+    display: flex;
+    flex-direction: column;
+    z-index: 9998;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow: hidden;
+}
+
+/* 메인 컨텐츠 컨테이너 */
+.main-content-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* 네비게이션 바 높이 제외 */
+    overflow: hidden;
+}
+
+/* 위쪽: 모양 선택 영역 */
+.main-shape-section {
+    flex: 0 0 auto;
+    padding: 20px;
+    background: white;
+    border-bottom: 3px solid #4A90E2;
+}
+
+/* 모양 선택 그리드 컨테이너 */
+.shape-selector-grid {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.shape-selector-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+/* 모양 선택 그리드 (3열 2행) */
+.shape-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 모양 버튼 그리드 스타일 */
+.shape-btn-grid {
+    background: white;
+    border: 3px solid #dee2e6;
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shape-btn-grid:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #4A90E2;
+}
+
+.shape-btn-grid.active {
+    border-color: #4A90E2;
+    background: #f0f7ff;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.shape-btn-grid span {
+    font-size: 1em;
+    font-weight: 600;
+    color: #495057;
+}
+
+.shape-btn-grid.active span {
+    color: #4A90E2;
+}
+
+/* 경로 생성 버튼 */
+.main-search-btn {
+    width: 100%;
+    background: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-search-btn:hover {
+    background: #357ABD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.main-search-btn:active {
+    background: #2a5f94;
+}
+
+.main-search-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 아래쪽: 지도 영역 */
+.main-map-section {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    background: white;
+}
+
+/* 지도 컨테이너 */
+.map-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 모바일 반응형 - 시작 화면
+   - 화면 너비가 768px 이하일 때 적용되는 스타일
+   - 태블릿 및 스마트폰 가로 모드 대응 */
+@media (max-width: 768px) {
+    /* 모바일: 컨텐츠 컨테이너 간격 및 패딩 조정 */
+    .start-content {
+        gap: 20px;
+        padding: 30px 15px;
+    }
+    
+    /* 모바일: 상단 텍스트 크기 축소 및 여백 초기화 */
+    .start-text-top {
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    .start-text-top p {
+        font-size: 1.3em;
+    }
+    
+    /* 모바일: 마스코트 영역 여백 초기화 */
+    .start-mascot {
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    /* 모바일: 타이틀 크기 축소 및 여백 초기화 */
+    .start-title {
+        font-size: 2.2em;
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    /* 모바일: 저작권 정보 하단 여백 조정 */
+    .start-copyright {
+        margin-bottom: 15px;
+    }
+    
+    /* 모바일: 시작하기 버튼 위치 및 크기 조정 */
+    .start-button {
+        bottom: 100px;
+        padding: 15px 40px;
+        font-size: 1.1em;
+        min-width: 180px;
+        min-height: 48px;
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+}
+
+/* 작은 화면 반응형 (세로 모드)
+   - 화면 높이가 600px 이하일 때 적용되는 스타일
+   - 작은 스마트폰 세로 모드 대응 */
+@media (max-height: 600px) {
+    /* 작은 화면: 컨텐츠 간격 축소 */
+    .start-content {
+        gap: 15px;
+    }
+    
+    /* 작은 화면: 상단 텍스트 여백 초기화 */
+    .start-text-top {
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    /* 작은 화면: 마스코트 영역 여백 초기화 */
+    .start-mascot {
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    /* 작은 화면: 타이틀 크기 추가 축소 및 여백 초기화 */
+    .start-title {
+        font-size: 2em;
+        margin-top: 0; /* 데스크톱의 margin-top 제거 */
+    }
+    
+    /* 작은 화면: 시작하기 버튼 위치 및 크기 추가 조정 */
+    .start-button {
+        bottom: 70px;
+        padding: 12px 35px;
+        font-size: 1em;
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+}
+
+/* 시작 화면 페이드인 애니메이션
+   - 페이지 로드 시 시작 화면이 부드럽게 나타나는 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* 시작: 투명 */
+    }
+    to {
+        opacity: 1; /* 끝: 불투명 */
+    }
+}
+
+/* 시작 화면 컨텐츠에 페이드인 애니메이션 적용 */
+.start-content {
+    animation: fadeIn 0.5s ease-in; /* 0.5초 동안 부드럽게 나타남 */
+}
+
+/* ============================================
+   지역 선택 화면
+   ============================================ */
+
+/* 지역 선택 화면 전체 컨테이너
+   - 시작 화면 다음에 표시되는 화면
+   - 사용자가 지역을 선택하는 화면 */
+.region-select-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 시작 화면과 동일한 라임 배경 */
+    display: flex;
+    flex-direction: column;
+    z-index: 9999; /* 시작 화면보다 낮지만 메인 화면보다 높음 */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow-y: auto;
+}
+
+/* 지역 선택 화면 숨김 상태 */
+.region-select-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 상단 네비게이션 바
+   - 뒤로가기 버튼, 제목, 메뉴 버튼이 있는 상단 바 */
+.region-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 네비게이션 뒤로가기 버튼 */
+.nav-back-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #4A90E2; /* 파란색 */
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: opacity 0.3s ease;
+}
+
+.nav-back-btn:hover {
+    opacity: 0.7;
+}
+
+/* 네비게이션 제목 */
+.nav-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #4A90E2; /* 파란색 */
+    margin: 0;
+}
+
+/* 네비게이션 다음 단계 버튼 (오른쪽 화살표) */
+.nav-next-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #4A90E2; /* 파란색 */
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: opacity 0.3s ease;
+    font-weight: bold;
+}
+
+.nav-next-btn:hover {
+    opacity: 0.7;
+}
+
+/* 마스코트 및 말풍선 섹션
+   - 왼쪽에 마스코트, 오른쪽에 말풍선이 있는 영역 */
+.region-mascot-section {
+    display: flex;
+    align-items: flex-start;
+    padding: 30px 20px 20px 20px;
+    gap: 15px;
+}
+
+/* 지역 선택 화면용 마스코트 */
+.region-mascot {
+    flex-shrink: 0;
+}
+
+.mascot-image-small {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+/* 말풍선
+   - 마스코트 옆에 표시되는 말풍선 */
+.region-speech-bubble {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+    flex: 1;
+}
+
+/* 말풍선 꼬리 (왼쪽에서 나오는 삼각형) */
+.region-speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid white;
+}
+
+.region-speech-bubble p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* 지역 선택 컨테이너
+   - 지역 목록을 표시하는 영역 */
+.region-select-container {
+    padding: 0 20px;
+    flex: 1;
+}
+
+/* 지역 선택 아이템
+   - 각 지역을 표시하는 항목 */
+.region-select-item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+}
+
+.region-select-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 선택된 지역 아이템 */
+.region-select-item.selected {
+    border-color: #4A90E2; /* 파란색 테두리 */
+    background: #f0f7ff; /* 연한 파란색 배경 */
+}
+
+/* 지역 아이템 내용 */
+.region-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 지역 이름 (도/특별시) */
+.region-name {
+    font-size: 1em;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 선택된 지역의 이름 */
+.region-select-item.selected .region-name {
+    color: #4A90E2; /* 파란색 */
+}
+
+/* 지역 시/군 이름 */
+.region-city {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* 선택된 지역의 시/군 이름 */
+.region-select-item.selected .region-city {
+    color: #4A90E2; /* 파란색 */
+}
+
+/* 지역 선택 체크 표시 */
+.region-check {
+    font-size: 1.5em;
+    color: #4A90E2; /* 파란색 */
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.region-select-item.selected .region-check {
+    opacity: 1;
+}
+
+/* 다음 단계 버튼
+   - 하단에 고정된 다음 단계로 이동하는 버튼 */
+.region-next-btn {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: #4A90E2; /* 파란색 */
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 18px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+}
+
+.region-next-btn:hover {
+    background: #357ABD; /* 더 진한 파란색 */
+}
+
+.region-next-btn:active {
+    background: #2a5f94;
+}
+
+/* ============================================
+   테마 선택 화면
+   ============================================ */
+
+/* 테마 선택 화면 전체 컨테이너
+   - 지역 선택 화면 다음에 표시되는 화면
+   - 사용자가 POI 테마를 선택하는 화면 */
+.theme-select-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 시작 화면과 동일한 라임 그린 배경 */
+    display: flex;
+    flex-direction: column;
+    z-index: 9998; /* 지역 선택 화면보다 낮지만 메인 화면보다 높음 */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow-y: auto;
+}
+
+/* 테마 선택 화면 숨김 상태 */
+.theme-select-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 테마 선택 화면 상단 네비게이션 바 */
+.theme-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 테마 선택 화면 마스코트 및 말풍선 섹션 */
+.theme-mascot-section {
+    display: flex;
+    align-items: flex-start;
+    padding: 30px 20px 20px 20px;
+    gap: 15px;
+}
+
+/* 테마 선택 화면용 마스코트 */
+.theme-mascot {
+    flex-shrink: 0;
+}
+
+/* 테마 선택 화면 말풍선 */
+.theme-speech-bubble {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+    flex: 1;
+    border: 1px solid #ddd;
+}
+
+/* 테마 선택 화면 말풍선 꼬리 */
+.theme-speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid white;
+}
+
+.theme-speech-bubble::after {
+    content: '';
+    position: absolute;
+    left: -11px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #ddd;
+}
+
+.theme-speech-bubble p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* 테마 선택 컨테이너 */
+.theme-select-container {
+    padding: 0 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 테마 선택 아이템
+   - 각 테마 옵션을 표시하는 항목 (라디오 버튼 스타일) */
+.theme-select-item {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+}
+
+.theme-select-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 선택된 테마 아이템 */
+.theme-select-item.selected {
+    border-color: #4A90E2; /* 파란색 테두리 */
+    background: #f0f7ff; /* 연한 파란색 배경 */
+}
+
+/* 테마 라디오 버튼 (원형) */
+.theme-radio {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #4A90E2; /* 파란색 테두리 */
+    background: white;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+/* 선택된 테마의 라디오 버튼 내부 원 */
+.theme-select-item.selected .theme-radio {
+    background: #4A90E2; /* 파란색 배경 */
+}
+
+.theme-select-item.selected .theme-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white; /* 흰색 내부 원 */
+}
+
+/* 테마 라벨 텍스트 */
+.theme-label {
+    font-size: 1em;
+    color: #333;
+    flex: 1;
+    transition: color 0.3s ease;
+}
+
+/* 선택된 테마의 라벨 텍스트 */
+.theme-select-item.selected .theme-label {
+    color: #4A90E2; /* 파란색 */
+    font-weight: 600;
+    text-decoration: underline; /* 밑줄 추가 */
+    text-decoration-color: #4A90E2;
+}
+
+/* 테마 선택 화면 다음 단계 버튼 */
+.theme-next-btn {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: #4A90E2; /* 파란색 */
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 18px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+}
+
+.theme-next-btn:hover {
+    background: #357ABD; /* 더 진한 파란색 */
+}
+
+.theme-next-btn:active {
+    background: #2a5f94;
+}
+
+/* 모바일 반응형 - 테마 선택 화면 */
+@media (max-width: 768px) {
+    .theme-nav-bar {
+        padding: 12px 15px;
+    }
+    
+    .nav-title {
+        font-size: 1.1em;
+    }
+    
+    .theme-mascot-section {
+        padding: 20px 15px 15px 15px;
+    }
+    
+    .theme-speech-bubble {
+        padding: 12px 16px;
+        max-width: 200px;
+    }
+    
+    .theme-speech-bubble p {
+        font-size: 0.85em;
+    }
+    
+    .theme-select-container {
+        padding: 0 15px;
+    }
+    
+    .theme-select-item {
+        padding: 16px;
+    }
+    
+    .theme-radio {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .theme-select-item.selected .theme-radio::after {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .theme-label {
+        font-size: 0.95em;
+    }
+    
+    .theme-next-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+}
+
+/* ============================================
+   POI 선택 화면
+   ============================================ */
+
+/* POI 선택 화면 전체 컨테이너
+   - 지역 선택 화면 다음에 표시되는 화면
+   - 사용자가 방문할 POI를 선택하는 화면 */
+.poi-select-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 시작 화면과 동일한 라임 배경 */
+    display: flex;
+    flex-direction: column;
+    z-index: 9998; /* 지역 선택 화면보다 낮지만 메인 화면보다 높음 */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow: hidden; /* 스크롤은 내부에서 처리 */
+}
+
+/* POI 선택 화면 숨김 상태 */
+.poi-select-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 화면 분할 컨테이너
+   - 위쪽 지도와 아래쪽 리스트를 50:50으로 분할 */
+.poi-select-split-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* 네비게이션 바 높이 제외 */
+    overflow: hidden;
+}
+
+/* 위쪽: 지도 영역 (50%) */
+.poi-map-section {
+    flex: 1;
+    position: relative;
+    min-height: 0; /* flexbox에서 overflow를 위해 필요 */
+}
+
+/* POI 선택 화면용 지도 */
+.poi-select-map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 역물방울 모양 마커 스타일 */
+.poi-teardrop-marker {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.poi-teardrop-marker svg {
+    transition: transform 0.2s ease;
+}
+
+.poi-teardrop-marker:hover svg {
+    transform: scale(1.1);
+}
+
+/* 마커 내부 원형 이미지 스타일 */
+.poi-marker-image {
+    pointer-events: none; /* 마커 클릭 이벤트가 이미지로 전달되지 않도록 */
+}
+
+.poi-marker-image img {
+    display: block;
+}
+
+/* 거리 정보 표시 영역
+   - 카테고리 버튼 위에 표시되는 거리 정보 */
+.poi-distance-info-section {
+    padding: 12px 20px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.poi-distance-info-section.hidden {
+    display: none;
+}
+
+.distance-info-content {
+    text-align: center;
+}
+
+.distance-text {
+    margin: 0;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333;
+}
+
+#poi-distance-value {
+    color: #4A90E2;
+    font-size: 1.1em;
+}
+
+/* 경고 메시지 영역
+   - 20km 초과 시 표시되는 경고
+   - 거리 정보 아래에 표시 */
+.poi-distance-warning-section {
+    padding: 12px 20px;
+    background: #dc3545;
+    color: white;
+    flex-shrink: 0;
+    border-bottom: 1px solid #dc3545;
+}
+
+.poi-distance-warning-section.hidden {
+    display: none;
+}
+
+.warning-content {
+    text-align: center;
+}
+
+.warning-content p {
+    margin: 5px 0;
+    font-weight: 600;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* 아래쪽: POI 리스트 영역 (50%) */
+.poi-list-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    min-height: 0; /* flexbox에서 overflow를 위해 필요 */
+    border-top: 3px solid #4A90E2;
+}
+
+/* ============================================
+   시작 위치 선택 화면
+   ============================================ */
+
+/* 시작 위치 선택 화면 전체 컨테이너 */
+.start-location-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75; /* 시작 화면과 동일한 라임 배경 */
+    display: flex;
+    flex-direction: column;
+    z-index: 9997; /* POI 선택 화면보다 낮지만 메인 화면보다 높음 */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow: hidden;
+}
+
+/* 시작 위치 선택 화면 숨김 상태 */
+.start-location-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 시작 위치 선택 화면 지도 컨테이너 */
+.start-location-map-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+}
+
+/* 시작 위치 선택 화면용 지도 */
+.start-location-map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 시작 위치 선택 안내 메시지 */
+.start-location-hint {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+    pointer-events: none;
+}
+
+.start-location-hint p {
+    margin: 0;
+}
+
+/* 선택된 위치 정보 영역 */
+.start-location-info {
+    padding: 15px 20px;
+    background: white;
+    border-top: 2px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.location-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.location-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95em;
+}
+
+.location-value {
+    color: #4A90E2;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+/* 시작 위치 선택 화면 다음 단계 버튼 */
+.start-location-next-btn {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: #4A90E2; /* 파란색 */
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 18px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.start-location-next-btn:hover {
+    background: #357ABD; /* 더 진한 파란색 */
+}
+
+.start-location-next-btn:active {
+    background: #2a5f94;
+}
+
+/* 모바일 반응형 - 시작 위치 선택 화면 */
+@media (max-width: 768px) {
+    .start-location-hint {
+        font-size: 0.8em;
+        padding: 8px 16px;
+        top: 5px;
+    }
+    
+    .start-location-info {
+        padding: 12px 15px;
+    }
+    
+    .location-label,
+    .location-value {
+        font-size: 0.85em;
+    }
+    
+    .start-location-next-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+}
+
+/* POI 카테고리 선택 버튼 영역
+   - 역사적 장소, 문화공간, 맛집/카페, 모든 장소보기 버튼
+   - 리스트 섹션 상단에 위치 */
+.poi-list-section .poi-category-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 15px 20px;
+    overflow-x: auto;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+/* POI 카테고리 버튼
+   - 각 카테고리 선택 버튼 */
+.poi-category-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.poi-category-btn:hover {
+    border-color: #4A90E2;
+    background: #f0f7ff;
+    color: #4A90E2;
+}
+
+/* 선택된 카테고리 버튼 */
+.poi-category-btn.active {
+    background: #4A90E2;
+    border-color: #4A90E2;
+    color: white;
+}
+
+/* POI 목록 컨테이너
+   - 선택된 카테고리에 해당하는 POI 목록을 표시하는 영역
+   - 리스트 섹션 중앙에 위치 */
+.poi-list-section .poi-list-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    min-height: 0; /* flexbox에서 overflow를 위해 필요 */
+}
+
+/* POI 선택 목록
+   - POI 아이템들이 표시되는 그리드 레이아웃
+   - 데스크톱: 4열, 모바일: 2열 */
+.poi-select-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 데스크톱: 4열 */
+    gap: 12px;
+}
+
+/* POI 선택 아이템
+   - 각 POI를 표시하는 항목
+   - 그리드 레이아웃에 맞게 세로 배치 */
+.poi-select-item {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+    min-height: 100px; /* 그리드 아이템 최소 높이 */
+    position: relative; /* 체크 표시 위치 기준 */
+    gap: 10px;
+}
+
+/* POI 아이템 이미지 (원형) */
+.poi-select-item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #e9ecef;
+    background: #f8f9fa;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.poi-select-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 선택된 POI 아이템의 이미지 테두리 */
+.poi-select-item.selected .poi-select-item-image {
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.poi-select-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 선택된 POI 아이템 */
+.poi-select-item.selected {
+    border-color: #4A90E2;
+    background: #f0f7ff;
+}
+
+/* POI 아이템 내용 */
+.poi-select-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+/* POI 이름 */
+.poi-select-item-name {
+    font-size: 1em;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 선택된 POI의 이름 */
+.poi-select-item.selected .poi-select-item-name {
+    color: #4A90E2;
+}
+
+/* POI 카테고리 태그 */
+.poi-select-item-category {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: white;
+    background: #6c757d;
+}
+
+/* POI 선택 체크 표시 */
+.poi-select-item-check {
+    font-size: 1.5em;
+    color: #4A90E2;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute; /* 절대 위치 */
+    top: 12px;
+    right: 12px;
+}
+
+.poi-select-item.selected .poi-select-item-check {
+    opacity: 1;
+}
+
+/* 선택된 POI 요약 영역
+   - 하단에 선택된 POI 개수를 표시하는 영역 */
+.poi-selected-summary {
+    padding: 15px 20px;
+    background: white;
+    border-top: 2px solid #e9ecef;
+    position: sticky;
+    bottom: 60px; /* 버튼 위에 위치 */
+    z-index: 5;
+}
+
+.poi-selected-count {
+    text-align: center;
+}
+
+.poi-selected-count-text {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* POI 선택 화면 다음 단계 버튼
+   - 다른 화면과 동일한 스타일 */
+.poi-next-btn {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: #4A90E2; /* 파란색 */
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 18px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.poi-next-btn:hover {
+    background: #357ABD; /* 더 진한 파란색 */
+}
+
+.poi-next-btn:active {
+    background: #2a5f94;
+}
+
+/* 모바일 반응형 - 지역 선택 화면 */
+@media (max-width: 768px) {
+    .region-nav-bar {
+        padding: 12px 15px;
+    }
+    
+    .nav-title {
+        font-size: 1.1em;
+    }
+    
+    .region-mascot-section {
+        padding: 20px 15px 15px 15px;
+    }
+    
+    .mascot-image-small {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .region-speech-bubble {
+        padding: 12px 16px;
+        max-width: 200px;
+    }
+    
+    .region-speech-bubble p {
+        font-size: 0.85em;
+    }
+    
+    .region-select-container {
+        padding: 0 15px;
+    }
+    
+    .region-select-item {
+        padding: 16px;
+    }
+    
+    .region-name {
+        font-size: 0.95em;
+    }
+    
+    .region-city {
+        font-size: 0.85em;
+    }
+    
+    .region-next-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+    
+    /* 모바일: 지도 영역 크기 축소 (리스트 영역 확대) */
+    .poi-map-section {
+        flex: 0.4; /* 지도 영역을 40%로 축소 */
+        min-height: 200px; /* 최소 높이 보장 */
+    }
+    
+    /* 모바일: POI 리스트 영역 확대 */
+    .poi-list-section {
+        flex: 1.6; /* 리스트 영역을 60%로 확대 */
+    }
+    
+    /* 모바일: POI 선택 목록 (2열 그리드) */
+    .poi-select-list {
+        grid-template-columns: repeat(2, 1fr); /* 모바일: 2열 */
+        gap: 10px;
+    }
+    
+    /* 모바일: POI 카테고리 버튼 */
+    .poi-category-buttons {
+        padding: 12px 15px;
+        gap: 8px;
+    }
+    
+    .poi-category-btn {
+        padding: 8px 16px;
+        font-size: 0.85em;
+    }
+    
+    /* 모바일: POI 목록 컨테이너 */
+    .poi-list-container {
+        padding: 15px;
+    }
+    
+    /* 모바일: POI 선택 아이템 */
+    .poi-select-item {
+        padding: 14px 16px;
+        min-height: 90px;
+    }
+    
+    /* 모바일: POI 아이템 이미지 */
+    .poi-select-item-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .poi-select-item-name {
+        font-size: 0.95em;
+    }
+    
+    /* 모바일: 선택된 POI 요약 */
+    .poi-selected-summary {
+        padding: 12px 15px;
+        bottom: 56px;
+    }
+    
+    /* 모바일: POI 선택 화면 다음 단계 버튼 */
+    .poi-next-btn {
+        padding: 16px 25px;
+        font-size: 1em;
+    }
+}
+
+/* ============================================
+   로딩 화면
+   ============================================ */
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loading-screen-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.loading-shape-container {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-shape-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-progress {
+    text-align: center;
+}
+
+.loading-progress-text {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.loading-progress-count {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #4A90E2;
+}
+
+/* ============================================
+   결과 화면
+   ============================================ */
+
+.result-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow: hidden;
+}
+
+.result-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.result-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* 네비게이션 바 높이 제외 */
+    overflow: hidden;
+}
+
+.result-map-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.result-map {
+    width: 100%;
+    height: 100%;
+}
+
+.result-list-container {
+    flex: 0 0 40%;
+    background: white;
+    border-top: 3px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.result-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 2px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.result-list-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #495057;
+    margin: 0;
+}
+
+.retry-longer-range-btn {
+    padding: 10px 20px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.retry-longer-range-btn:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+.retry-longer-range-btn:active {
+    transform: translateY(0);
+}
+
+.result-candidate-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.result-candidate-item {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.result-candidate-item:hover {
+    border-color: #4A90E2;
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
+    transform: translateY(-2px);
+}
+
+.result-candidate-item.active {
+    border-color: #4A90E2;
+    background: #f0f7ff;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.result-candidate-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 15px;
+}
+
+.result-candidate-shape {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+}
+
+.result-candidate-shape-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.result-candidate-shape-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.result-candidate-rank {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #4A90E2;
+}
+
+.result-candidate-info {
+    flex: 1;
+    margin-left: 15px;
+}
+
+.result-candidate-info p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #495057;
+}
+
+.result-candidate-info strong {
+    color: #212529;
+    font-weight: 600;
+}
+
+.result-candidate-variation {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .loading-shape-container {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .loading-progress-text {
+        font-size: 1em;
+    }
+    
+    .loading-progress-count {
+        font-size: 1.3em;
+    }
+    
+    .result-list-container {
+        flex: 0 0 50%;
+    }
+    
+    .result-list-header {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .result-list-title {
+        font-size: 1.1em;
+    }
+    
+    .retry-longer-range-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.85em;
+    }
+    
+    .result-candidate-shape {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .result-candidate-item {
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+    
+    .result-candidate-rank {
+        font-size: 1.3em;
+    }
+    
+    .result-candidate-info p {
+        font-size: 0.9em;
+    }
+}
+
+/* ============================================
+   드로잉런 실행 화면
+   ============================================ */
+
+.running-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E1FF75;
+    display: flex;
+    flex-direction: column;
+    z-index: 10001;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    overflow: hidden;
+}
+
+.running-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.running-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* 네비게이션 바 높이 제외 */
+    overflow: hidden;
+}
+
+.running-map-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.running-map {
+    width: 100%;
+    height: 100%;
+}
+
+.running-control-panel {
+    flex-shrink: 0;
+    background: white;
+    border-top: 3px solid #e9ecef;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.running-status {
+    text-align: center;
+}
+
+.running-status p {
+    font-size: 1em;
+    font-weight: 600;
+    color: #495057;
+    margin: 0;
+}
+
+.running-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.start-running-btn,
+.stop-running-btn {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-running-btn {
+    background: #28a745;
+    color: white;
+}
+
+.start-running-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.stop-running-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.stop-running-btn:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+.start-running-btn.hidden,
+.stop-running-btn.hidden {
+    display: none;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .running-control-panel {
+        padding: 15px;
+    }
+    
+    .running-status p {
+        font-size: 0.9em;
+    }
+    
+    .start-running-btn,
+    .stop-running-btn {
+        padding: 14px 20px;
+        font-size: 1em;
+    }
+}

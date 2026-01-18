@@ -1,0 +1,17 @@
+{
+  "name": "drawing-run",
+  "version": "1.0.0",
+  "description": "드로잉 런 - 전주시 도로 데이터 수집",
+  "main": "fetch_roads.js",
+  "scripts": {
+    "fetch-roads": "node fetch_roads.js"
+  },
+  "keywords": [
+    "drawing-run",
+    "osm",
+    "openstreetmap"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
