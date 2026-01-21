@@ -2489,6 +2489,19 @@ function startAnimationMode() {
     runningTrackCoordinates = [];
     routeAnimationIndex = 0;
     
+    // 파란 경로 레이어가 없으면 다시 추가
+    if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
+        if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
+            runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
+                color: '#667eea',
+                weight: 6,
+                opacity: 0.9,
+                lineJoin: 'round',
+                lineCap: 'round'
+            }).addTo(runningMap);
+        }
+    }
+    
     // 상태 업데이트
     const statusText = document.getElementById('running-status-text');
     if (statusText) {
@@ -2522,6 +2535,19 @@ function startRunning() {
     isAnimating = true;
     runningTrackCoordinates = [];
     routeAnimationIndex = 0;
+    
+    // 파란 경로 레이어가 없으면 다시 추가
+    if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
+        if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
+            runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
+                color: '#667eea',
+                weight: 6,
+                opacity: 0.9,
+                lineJoin: 'round',
+                lineCap: 'round'
+            }).addTo(runningMap);
+        }
+    }
     
     // 상태 업데이트
     const statusText = document.getElementById('running-status-text');

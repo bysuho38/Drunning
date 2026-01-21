@@ -780,7 +780,7 @@ header p {
    - 클릭 시 메인 화면으로 전환 */
 .start-button {
     position: absolute;
-    bottom: 250px; /* 화면 하단에서 250px 위로 조정 (드러닝 글씨와 겹치지 않도록) */
+    bottom: 25vh; /* 화면 높이의 25% 위치에 배치 (비율 기반) */
     left: 50%;
     transform: translateX(-50%); /* 수평 중앙 정렬 */
     background: #4A90E2; /* 파란색 배경 */
