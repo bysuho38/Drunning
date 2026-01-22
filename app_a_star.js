@@ -2234,6 +2234,7 @@ let watchId = null;
 let currentRunningRoute = null;
 let currentRunningStartPoint = null;
 let animationFrameId = null;
+let animationTimeoutId = null; // 애니메이션 setTimeout ID 저장
 let routeAnimationIndex = 0;
 let isAnimating = false;
 
@@ -2266,6 +2267,7 @@ function showRunningScreen(route, startPoint, shapeName, selectedShape) {
     isAnimating = false;
     runningTrackCoordinates = [];
     routeAnimationIndex = 0;
+    animationTimeoutId = null; // 타이머 ID 초기화
     
     // 상태 업데이트
     const statusText = document.getElementById('running-status-text');
@@ -2421,6 +2423,12 @@ function displayRunnerMarker(lat, lon) {
 
 // HTTP 환경에서 경로를 따라가는 애니메이션
 function animateRouteFollowing() {
+    // 애니메이션이 중지되었으면 즉시 종료
+    if (!isAnimating) {
+        return;
+    }
+    
+    // 도착점 도달 확인
     if (!currentRunningRoute || !currentRunningRoute.coordinates || routeAnimationIndex >= currentRunningRoute.coordinates.length) {
         // 애니메이션 완료
         isAnimating = false;
@@ -2462,14 +2470,14 @@ function animateRouteFollowing() {
         
         routeAnimationIndex++;
         
-        // 다음 좌표로 이동
-        setTimeout(() => {
+        // 다음 좌표로 이동 (타임아웃 ID 저장)
+        animationTimeoutId = setTimeout(() => {
             if (isAnimating) {
                 animateRouteFollowing();
             }
         }, Math.max(50, timeMs)); // 최소 50ms 간격
     } else {
-        // 경로 완료
+        // 마지막 좌표에 도달 - 경로 완료
         isAnimating = false;
         stopRunning();
     }
@@ -2488,6 +2496,7 @@ function startAnimationMode() {
     isAnimating = true; // 애니메이션만 실행
     runningTrackCoordinates = [];
     routeAnimationIndex = 0;
+    animationTimeoutId = null; // 타이머 ID 초기화
     
     // 파란 경로 레이어가 없으면 다시 추가
     if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
@@ -2535,6 +2544,7 @@ function startRunning() {
     isAnimating = true;
     runningTrackCoordinates = [];
     routeAnimationIndex = 0;
+    animationTimeoutId = null; // 타이머 ID 초기화
     
     // 파란 경로 레이어가 없으면 다시 추가
     if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
@@ -2577,6 +2587,11 @@ function startRunning() {
         
         watchId = navigator.geolocation.watchPosition(
             (position) => {
+                // 실행 중이 아니면 즉시 종료
+                if (!isRunning) {
+                    return;
+                }
+                
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 
@@ -2597,6 +2612,19 @@ function startRunning() {
                 
                 // 동선 업데이트
                 updateRunningTrack();
+                
+                // 도착점 도달 확인 (경로의 마지막 좌표와의 거리)
+                if (currentRunningRoute && currentRunningRoute.coordinates && currentRunningRoute.coordinates.length > 0) {
+                    const destination = currentRunningRoute.coordinates[currentRunningRoute.coordinates.length - 1];
+                    const [destLat, destLon] = destination;
+                    const distanceToDestination = calculateDistanceBetweenCoords(lat, lon, destLat, destLon);
+                    
+                    // 도착점으로부터 50m 이내에 도달하면 자동 중지
+                    if (distanceToDestination <= 50) {
+                        console.log('도착점 도달! 드로잉런을 자동으로 중지합니다.');
+                        stopRunning();
+                    }
+                }
             },
             (error) => {
                 console.error('GPS 추적 오류:', error);
@@ -2630,7 +2658,13 @@ function stopRunning() {
         watchId = null;
     }
     
-    // 애니메이션 중지
+    // 애니메이션 타이머 중지
+    if (animationTimeoutId !== null) {
+        clearTimeout(animationTimeoutId);
+        animationTimeoutId = null;
+    }
+    
+    // 애니메이션 프레임 중지
     if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
