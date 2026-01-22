@@ -2296,6 +2296,15 @@ function initRunningMap(route, startPoint, shapeName) {
     
     // 기존 지도 제거
     if (runningMap) {
+        // 기존 레이어들 제거
+        if (runningRouteLayer) {
+            try {
+                runningMap.removeLayer(runningRouteLayer);
+            } catch (e) {
+                // 무시 가능한 오류
+            }
+            runningRouteLayer = null;
+        }
         runningMap.remove();
         runningMap = null;
     }
@@ -2309,7 +2318,7 @@ function initRunningMap(route, startPoint, shapeName) {
         maxZoom: 19
     }).addTo(runningMap);
     
-    // 경로 표시
+    // 경로 표시 (파란 경로)
     runningRouteLayer = L.polyline(route.coordinates, {
         color: '#667eea',
         weight: 6,
@@ -2486,7 +2495,8 @@ function animateRouteFollowing() {
 function startAnimationMode() {
     if (isRunning || isAnimating) return;
     
-    if (!currentRunningRoute || !currentRunningRoute.coordinates || currentRunningRoute.coordinates.length === 0) {
+    // 지도와 경로 데이터 확인
+    if (!runningMap || !currentRunningRoute || !currentRunningRoute.coordinates || currentRunningRoute.coordinates.length === 0) {
         alert('경로가 선택되지 않았습니다. 먼저 경로를 선택해주세요.');
         return;
     }
@@ -2498,22 +2508,27 @@ function startAnimationMode() {
     animationTimeoutId = null; // 타이머 ID 초기화
     
     // 파란 경로 레이어가 없거나 지도에서 제거되었으면 다시 추가
-    if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
-        if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
-            // 기존 레이어가 있으면 제거
-            if (runningRouteLayer) {
+    // 기존 레이어가 있으면 먼저 제거
+    if (runningRouteLayer) {
+        try {
+            if (runningMap.hasLayer(runningRouteLayer)) {
                 runningMap.removeLayer(runningRouteLayer);
             }
-            // 새 레이어 추가
-            runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
-                color: '#667eea',
-                weight: 6,
-                opacity: 0.9,
-                lineJoin: 'round',
-                lineCap: 'round'
-            }).addTo(runningMap);
+        } catch (e) {
+            // 레이어가 이미 제거되었거나 다른 지도에 속한 경우 무시
+            console.log('기존 레이어 제거 중 오류 (무시 가능):', e);
         }
+        runningRouteLayer = null;
     }
+    
+    // 파란 경로 레이어 다시 추가
+    runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
+        color: '#667eea',
+        weight: 6,
+        opacity: 0.9,
+        lineJoin: 'round',
+        lineCap: 'round'
+    }).addTo(runningMap);
     
     // 상태 업데이트
     const statusText = document.getElementById('running-status-text');
@@ -2544,6 +2559,12 @@ function startAnimationMode() {
 function startRunning() {
     if (isRunning || isAnimating) return;
     
+    // 지도와 경로 데이터 확인
+    if (!runningMap || !currentRunningRoute || !currentRunningRoute.coordinates) {
+        console.error('지도 또는 경로 데이터가 없습니다.');
+        return;
+    }
+    
     isRunning = true;
     isAnimating = true;
     runningTrackCoordinates = [];
@@ -2551,22 +2572,27 @@ function startRunning() {
     animationTimeoutId = null; // 타이머 ID 초기화
     
     // 파란 경로 레이어가 없거나 지도에서 제거되었으면 다시 추가
-    if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
-        if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
-            // 기존 레이어가 있으면 제거
-            if (runningRouteLayer) {
+    // 기존 레이어가 있으면 먼저 제거
+    if (runningRouteLayer) {
+        try {
+            if (runningMap.hasLayer(runningRouteLayer)) {
                 runningMap.removeLayer(runningRouteLayer);
             }
-            // 새 레이어 추가
-            runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
-                color: '#667eea',
-                weight: 6,
-                opacity: 0.9,
-                lineJoin: 'round',
-                lineCap: 'round'
-            }).addTo(runningMap);
+        } catch (e) {
+            // 레이어가 이미 제거되었거나 다른 지도에 속한 경우 무시
+            console.log('기존 레이어 제거 중 오류 (무시 가능):', e);
         }
+        runningRouteLayer = null;
     }
+    
+    // 파란 경로 레이어 다시 추가
+    runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
+        color: '#667eea',
+        weight: 6,
+        opacity: 0.9,
+        lineJoin: 'round',
+        lineCap: 'round'
+    }).addTo(runningMap);
     
     // 상태 업데이트
     const statusText = document.getElementById('running-status-text');
