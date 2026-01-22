@@ -2430,8 +2430,7 @@ function animateRouteFollowing() {
     
     // 도착점 도달 확인
     if (!currentRunningRoute || !currentRunningRoute.coordinates || routeAnimationIndex >= currentRunningRoute.coordinates.length) {
-        // 애니메이션 완료
-        isAnimating = false;
+        // 애니메이션 완료 - stopRunning에서 상태를 관리하므로 여기서는 호출만
         stopRunning();
         return;
     }
@@ -2478,7 +2477,7 @@ function animateRouteFollowing() {
         }, Math.max(50, timeMs)); // 최소 50ms 간격
     } else {
         // 마지막 좌표에 도달 - 경로 완료
-        isAnimating = false;
+        // stopRunning에서 상태를 관리하므로 여기서는 호출만
         stopRunning();
     }
 }
@@ -2498,9 +2497,14 @@ function startAnimationMode() {
     routeAnimationIndex = 0;
     animationTimeoutId = null; // 타이머 ID 초기화
     
-    // 파란 경로 레이어가 없으면 다시 추가
+    // 파란 경로 레이어가 없거나 지도에서 제거되었으면 다시 추가
     if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
         if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
+            // 기존 레이어가 있으면 제거
+            if (runningRouteLayer) {
+                runningMap.removeLayer(runningRouteLayer);
+            }
+            // 새 레이어 추가
             runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
                 color: '#667eea',
                 weight: 6,
@@ -2546,9 +2550,14 @@ function startRunning() {
     routeAnimationIndex = 0;
     animationTimeoutId = null; // 타이머 ID 초기화
     
-    // 파란 경로 레이어가 없으면 다시 추가
+    // 파란 경로 레이어가 없거나 지도에서 제거되었으면 다시 추가
     if (!runningRouteLayer || !runningMap.hasLayer(runningRouteLayer)) {
         if (runningMap && currentRunningRoute && currentRunningRoute.coordinates) {
+            // 기존 레이어가 있으면 제거
+            if (runningRouteLayer) {
+                runningMap.removeLayer(runningRouteLayer);
+            }
+            // 새 레이어 추가
             runningRouteLayer = L.polyline(currentRunningRoute.coordinates, {
                 color: '#667eea',
                 weight: 6,
@@ -2647,7 +2656,19 @@ function startRunning() {
 
 // 드로잉런 중지
 function stopRunning() {
-    if (!isRunning && !isAnimating) return;
+    // 애니메이션이나 실행이 진행 중이 아니면 버튼 상태만 업데이트하고 종료
+    const wasRunning = isRunning || isAnimating;
+    
+    if (!wasRunning) {
+        // 이미 완료된 상태지만 버튼 상태는 업데이트
+        const startBtn = document.getElementById('start-running-btn');
+        const animationBtn = document.getElementById('start-animation-btn');
+        const stopBtn = document.getElementById('stop-running-btn');
+        if (startBtn) startBtn.classList.remove('hidden');
+        if (animationBtn) animationBtn.classList.remove('hidden');
+        if (stopBtn) stopBtn.classList.add('hidden');
+        return;
+    }
     
     isRunning = false;
     isAnimating = false;
@@ -2684,11 +2705,9 @@ function stopRunning() {
     if (animationBtn) animationBtn.classList.remove('hidden');
     if (stopBtn) stopBtn.classList.add('hidden');
     
-    // 기존 경로 레이어 제거 (붉은 선만 남기기)
-    if (runningRouteLayer) {
-        runningMap.removeLayer(runningRouteLayer);
-        runningRouteLayer = null;
-    }
+    // 파란 경로 레이어는 제거하지 않음 (다시 시작할 때 필요)
+    // 대신 붉은 선만 표시되도록 하기 위해 파란 경로는 유지하되
+    // 사용자가 다시 시작할 수 있도록 함
     
     // 지도 범위 조정 (그려진 경로에 맞춤)
     if (runningTrackCoordinates.length > 0 && runningMap) {
